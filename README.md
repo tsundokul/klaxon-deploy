@@ -3,7 +3,8 @@
 [Klaxon](https://github.com/themarshallproject/klaxon) enables reporters and editors to monitor scores of sites on the web for newsworthy changes.
 
 To deploy klaxon using this repo you'll need `docker` and `docker-compose`.
-This method uses Gmail as email notification server, so you'll also need a gmail account.
+
+This method uses Gmail as email notification server, so you'll also need a gmail account. If you have your own SMTP server you can just replace the server details in the `.env` file and that should work as well.
 
 #### Steps:
 1. create an application password for the gmail account that will act as notifier
@@ -22,12 +23,18 @@ This method uses Gmail as email notification server, so you'll also need a gmail
     - the klaxon container will be built on the first run
     - when it's done, you should be able to access its web interface at http://localhost:3000
 
-5. find out the klaxon's container name useing `docker ps`; should be something like `klaxon-deploy_klaxon_1`
+5. find out klaxon's container name using `docker ps`; should be something like `klaxon-deploy_klaxon_1`
 
 6. in a new terminal access the klaxon container using `docker exec -it <container-name> bash`
 
 7. add an admin user using the command `bundle exec rake users:create_admin RAILS_ENV=production ADMIN_EMAILS=<your_admin_email>`
 
-8. enter the admin email in the web interface and check your email for a login link; you should now have access to the administration dashboard
+8. go to the web UI, enter the admin email and check your inbox for the login link; you should now have access to the administration dashboard
 
-## <center>👾</center>
+9. finally, add a cron job that will trigger the checks at specific intervals eg. `crontab -e`
+```bash
+# perform checks every 10 minutes
+*/10 * * * * docker exec klaxon-deploy_klaxon_1 bundle exec rake check:all
+```
+
+<p align="center">💜</p>
