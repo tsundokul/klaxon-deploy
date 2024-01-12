@@ -1,4 +1,4 @@
-### Scripts and guide on how to deploy Klaxon on your own server
+## Scripts and guide on how to deploy Klaxon on your own server
 
 [Klaxon](https://github.com/themarshallproject/klaxon) enables reporters and editors to monitor scores of sites on the web for newsworthy changes.
 
@@ -17,7 +17,7 @@ This method uses Gmail as email notification server, so you'll also need a gmail
     - `GMAIL_USERNAME` - the email address which acts as sender/notifier (see step 1.)
     - `GMAIL_PASSWORD` - the password generated at step 1. (but dont forget to delete any white spaces)
 
-3. create the folder for database persistence with `mkdir pgdata` and fetch the klaxon source code with `git submodule update --recursive`
+3. create the folder for database persistence with `mkdir pgdata` and fetch the klaxon source code with `git submodule update --init`
 
 4. start the stack using `docker-compose up` in a separate terminal
     - the klaxon container will be built on the first run
@@ -34,7 +34,7 @@ This method uses Gmail as email notification server, so you'll also need a gmail
 9. finally, add a cron job that will trigger the checks at specific intervals eg. `crontab -e`
 ```bash
 # perform checks every 10 minutes
-*/10 * * * * docker exec klaxon-deploy_klaxon_1 bundle exec rake check:all
+*/10 * * * * docker exec <klaxon-container> bundle exec rake check:all
 ```
 
 <p align="center">💜</p>
