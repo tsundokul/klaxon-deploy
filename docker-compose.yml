@@ -1,0 +1,37 @@
+# docker-compose.yml
+version: '3.1'
+
+services:
+  db:
+    image: postgres:15
+    hostname: postgres
+    shm_size: 1g
+    restart: always
+    expose: ['5432']
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB:  ${POSTGRES_DB}
+    volumes:
+       - type: bind
+         source: ./pgdata
+         target: /var/lib/postgresql/data
+
+  klaxon:
+    image: klaxon:latest
+    hostname: klaxon
+    restart: always
+    build:
+      context: ./klaxon
+    ports: ["3000:3000"]
+    environment:
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASS}
+      DATABASE_URL: ${POSTGRES_URL}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      SMTP_PROVIDER: ${SMTP_PROVIDER}
+      GMAIL_ADDRESS: ${GMAIL_ADDRESS}
+      GMAIL_PORT: ${GMAIL_PORT}
+      GMAIL_USERNAME: ${GMAIL_USERNAME}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
+      GMAIL_DOMAIN: ${GMAIL_DOMAIN}

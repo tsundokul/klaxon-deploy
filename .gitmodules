@@ -1,0 +1,3 @@
+[submodule "klaxon"]
+	path = klaxon
+	url = https://github.com/themarshallproject/klaxon
